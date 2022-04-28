@@ -59,11 +59,10 @@ class TestOVNRelayXenaOperatorCharm(test_utils.CharmTestCase):
         self.assertEqual(self.harness.charm.seen_events, [])
         test_utils.set_all_pebbles_ready(self.harness)
         test_utils.add_all_relations(self.harness)
-        self.assertEqual(
-            sorted(list(set(
-                self.container_calls.updated_files('ovsdb-server')))),
-            [
-                '/etc/ovn/cert_host',
-                '/etc/ovn/key_host',
-                '/etc/ovn/ovn-central.crt',
-                '/root/ovn-relay-wrapper.sh'])
+        config_files = [
+            '/etc/ovn/cert_host',
+            '/etc/ovn/key_host',
+            '/etc/ovn/ovn-central.crt',
+            '/root/ovn-relay-wrapper.sh']
+        for f in config_files:
+            self.check_file('ovsdb-server', f)
